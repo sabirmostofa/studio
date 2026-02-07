@@ -20,6 +20,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { initialCvHtml } from "@/lib/initial-cv-html";
+import { initialCvCss } from "@/lib/initial-cv-css";
 import { hexToHsl, hslToHex } from "@/lib/utils";
 
 type InputType = "text" | "html" | "image";
@@ -33,7 +34,7 @@ export default function Home() {
   const [inputType, setInputType] = useState<InputType>("html");
   const [additionalSuggestions, setAdditionalSuggestions] = useState("");
 
-  const [generatedCss, setGeneratedCss] = useState("");
+  const [generatedCss, setGeneratedCss] = useState(initialCvCss);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -44,25 +45,6 @@ export default function Home() {
     l: 95,
   });
   const [accentColor, setAccentColor] = useState({ h: 145, s: 45, l: 58 });
-
-  useEffect(() => {
-    const generateInitialStyles = async () => {
-      setIsLoading(true);
-      const result = await generateStyles(initialCvHtml, "");
-      if (result.success && result.css) {
-        setGeneratedCss(result.css);
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Uh oh! Something went wrong.",
-          description:
-            result?.error || "Could not generate initial styles.",
-        });
-      }
-      setIsLoading(false);
-    };
-    generateInitialStyles();
-  }, [toast]);
 
   useEffect(() => {
     document.documentElement.style.setProperty(
