@@ -67,7 +67,9 @@ Use hsl() CSS functions with the CSS variables available from the theme for all 
       - Use \`display: flex;\` with \`justify-content: space-between;\` to place elements on opposite ends.
   10. **Language Dots (\`.language-item\`, \`.dots\`):**
       - Use flexbox. Style \`.dot.filled\` with \`background-color: hsl(var(--primary));\` and \`.dot\` (unfilled) with a border using \`hsl(var(--border));\`.
-  11. **Print Styles:**
+  11. **Impact Highlight (\`.impact-highlight\`):**
+      - Style this to stand out. Give it a light background color (e.g., \`hsl(var(--accent) / 0.1)\`), a thick left border using the primary color (\`border-left: 4px solid hsl(var(--primary))\`), and some padding.
+  12. **Print Styles:**
       - Add a \`@media print\` block.
       - Inside, the print output MUST look identical to the screen view.
       - Add \`@page { size: A4; margin: 0; }\` to control the print page.

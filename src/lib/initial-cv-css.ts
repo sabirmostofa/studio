@@ -137,16 +137,23 @@ h2 {
   list-style-type: disc;
 }
 
+.impact-highlight {
+  background-color: hsl(var(--accent) / 0.1);
+  border-left: 4px solid hsl(var(--primary));
+  padding: 0.75rem 1rem;
+  margin-top: 1rem;
+}
+
+.impact-highlight p {
+  margin: 0;
+}
+
 .education-item {
     margin-bottom: 1rem;
 }
 
 .training-container .training-item {
     margin-bottom: 1rem;
-}
-
-.training-item h3 {
-    font-weight: bold;
 }
 
 .language-item {
@@ -190,7 +197,7 @@ h2 {
     width: 100%;
     height: 100%;
   }
-  .sidebar, .subtitle, .dot.filled {
+  .sidebar, .subtitle, .dot.filled, .impact-highlight {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }

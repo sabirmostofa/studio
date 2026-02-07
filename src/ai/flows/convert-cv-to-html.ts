@@ -50,6 +50,7 @@ The output HTML **MUST** use the following structure and CSS classes. Do not dev
       <h2>CONTACTS</h2>
       <ul class="contact-list">
         <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> email@example.com</li>
+        <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 555-123-4567</li>
         <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> City, Country</li>
         <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg> portfolio.com</li>
       </ul>
@@ -85,6 +86,9 @@ The output HTML **MUST** use the following structure and CSS classes. Do not dev
         <ul>
           <li>Responsibility or achievement.</li>
         </ul>
+        <div class="impact-highlight">
+            <p><strong>Key Impact:</strong> A brief, highlighted achievement or impact statement related to the role.</p>
+        </div>
       </div>
     </section>
     <section>
@@ -107,13 +111,15 @@ The output HTML **MUST** use the following structure and CSS classes. Do not dev
 **Instructions:**
 1.  Analyze the input (text or image) to identify all standard CV sections: Name, Contact, Summary, Experience, Education, Skills, etc.
 2.  If the input is an image, use OCR to extract the text.
-3.  Place the "contact", "skills", "achievements", and "interests" into the \`<aside class="sidebar">\`.
-4.  Place the "name", "summary", "experience", "education", and "training/courses" into the \`<main class="main-content">\`.
-5.  Use \`<h1>\` for the person's name and \`<div class="subtitle">\` for their title or tagline.
-6.  Use \`<h2>\` for section titles.
-7.  Use \`<ul>\` and \`<li>\` for lists. For the experience section, use the \`<div class="job">\` structure shown.
-8.  Do **not** include a profile picture, even if one is present in the source material.
-9.  Generate **ONLY** the HTML code for the content inside the \`<body>\` tag. Do not add any explanations, comments, or markdown.
+3.  For the **Contact** section, you **MUST** include an appropriate inline SVG icon before each contact item. Infer the correct icon from the contact type (email, phone, location, website/portfolio, LinkedIn, etc.). The SVGs must be 24x24 and use \`currentColor\` for the stroke. The example HTML shows the required SVG structure for email, phone, location, and portfolio. Use similar SVGs for other types.
+4.  Place the "contact", "skills", "achievements", and "interests" into the \`<aside class="sidebar">\`.
+5.  Place the "name", "summary", "experience", "education", and "training/courses" into the \`<main class="main-content">\`.
+6.  For the **Experience** section, if a job description contains a special highlighted summary of impact or key achievements (like "Digitisation & Impact" in an example), place it inside a \`<div class="impact-highlight">\` within the corresponding \`<div class="job">\`. It should come after the \`<ul>\` of responsibilities.
+7.  Use \`<h1>\` for the person's name and \`<div class="subtitle">\` for their title or tagline.
+8.  Use \`<h2>\` for section titles.
+9.  Use \`<ul>\` and \`<li>\` for lists. For the experience section, use the \`<div class="job">\` structure shown.
+10. Do **not** include a profile picture, even if one is present in the source material.
+11. Generate **ONLY** the HTML code for the content inside the \`<body>\` tag. Do not add any explanations, comments, or markdown.
 
 **CV Input:**
 {{#if cvText}}
