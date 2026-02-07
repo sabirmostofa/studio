@@ -7,6 +7,7 @@ import {
   FileImage,
   FileText,
   Loader2,
+  RotateCcw,
   Type,
   Wand2,
   ZoomIn,
@@ -28,6 +29,14 @@ import { hexToHsl, hslToHex } from "@/lib/utils";
 
 type InputType = "text" | "html" | "image";
 
+const DEFAULT_PRIMARY_COLOR_HSL = { h: 221, s: 26, l: 14 };
+const DEFAULT_BACKGROUND_COLOR_HSL = { h: 0, s: 0, l: 100 };
+const DEFAULT_ACCENT_COLOR_HSL = { h: 160, s: 84, l: 39 };
+
+const DEFAULT_PRIMARY_COLOR_HEX = "#1A202C";
+const DEFAULT_BACKGROUND_COLOR_HEX = "#FFFFFF";
+const DEFAULT_ACCENT_COLOR_HEX = "#10B981";
+
 export default function Home() {
   const [cvHtml, setCvHtml] = useState(initialCvHtml);
   const [textCv, setTextCv] = useState(
@@ -41,23 +50,17 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const [primaryColor, setPrimaryColor] = useState({ h: 162, s: 44, l: 47 });
-  const [backgroundColor, setBackgroundColor] = useState({
-    h: 220,
-    s: 17,
-    l: 95,
-  });
-  const [accentColor, setAccentColor] = useState({ h: 145, s: 45, l: 58 });
+  const [primaryColor, setPrimaryColor] = useState(DEFAULT_PRIMARY_COLOR_HSL);
+  const [backgroundColor, setBackgroundColor] = useState(
+    DEFAULT_BACKGROUND_COLOR_HSL
+  );
+  const [accentColor, setAccentColor] = useState(DEFAULT_ACCENT_COLOR_HSL);
 
-  const [primaryHex, setPrimaryHex] = useState(
-    hslToHex(primaryColor.h, primaryColor.s, primaryColor.l)
-  );
+  const [primaryHex, setPrimaryHex] = useState(DEFAULT_PRIMARY_COLOR_HEX);
   const [backgroundHex, setBackgroundHex] = useState(
-    hslToHex(backgroundColor.h, backgroundColor.s, backgroundColor.l)
+    DEFAULT_BACKGROUND_COLOR_HEX
   );
-  const [accentHex, setAccentHex] = useState(
-    hslToHex(accentColor.h, accentColor.s, accentColor.l)
-  );
+  const [accentHex, setAccentHex] = useState(DEFAULT_ACCENT_COLOR_HEX);
 
   const [zoom, setZoom] = useState(0.75);
 
@@ -187,6 +190,19 @@ export default function Home() {
         description: "Preview iframe not found.",
       });
     }
+  };
+  
+  const handleResetColors = () => {
+    setPrimaryColor(DEFAULT_PRIMARY_COLOR_HSL);
+    setBackgroundColor(DEFAULT_BACKGROUND_COLOR_HSL);
+    setAccentColor(DEFAULT_ACCENT_COLOR_HSL);
+    setPrimaryHex(DEFAULT_PRIMARY_COLOR_HEX);
+    setBackgroundHex(DEFAULT_BACKGROUND_COLOR_HEX);
+    setAccentHex(DEFAULT_ACCENT_COLOR_HEX);
+    toast({
+      title: "Colors Reset",
+      description: "The theme colors have been reset to their default values.",
+    });
   };
 
   const iframeSrcDoc = `
@@ -369,7 +385,13 @@ export default function Home() {
               </Button>
             </div>
             <div className="space-y-4 pt-8">
-              <h3 className="text-lg font-headline">Theme Customization</h3>
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-headline">Theme Customization</h3>
+                <Button variant="outline" size="sm" onClick={handleResetColors}>
+                  <RotateCcw className="mr-2" />
+                  Reset
+                </Button>
+              </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="primary-color-hex">Primary</Label>
