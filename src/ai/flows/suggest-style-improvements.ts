@@ -29,15 +29,45 @@ const prompt = ai.definePrompt({
   name: 'suggestStyleImprovementsPrompt',
   input: {schema: SuggestStyleImprovementsInputSchema},
   output: {schema: SuggestStyleImprovementsOutputSchema},
-  prompt: `You are an expert in CV styling and design. Analyze the provided CV HTML content and suggest CSS style improvements to enhance its visual appeal and readability, based on modern design principles.
+  prompt: `You are an expert CSS designer. Your task is to create a stylesheet for a CV based on the provided HTML. The final design should look like a professional, modern, two-column CV format.
 
-Consider aspects such as typography, color palettes, layout, and spacing to create a professional and effective CV.
+  **Layout:**
+  - The CV must have a two-column layout using flexbox or grid. The main container is \`.cv-wrapper\`.
+  - The left column (\`aside.sidebar\`) should be approximately 30% of the total width.
+  - The right column (\`main.main-content\`) should be approximately 70% of the total width.
+  - The left column has a light teal background (e.g., #e8f5f4) and padding (e.g., 2rem).
+  - The right column has a white background and padding.
 
-Ensure the suggested styles are compatible with standard HTML and CSS practices.
+  **Header (Right Column):**
+  - The name (\`h1\`) should be large, bold, and dark grey. Use the font 'Belleza'.
+  - The subtitle (\`.subtitle\`) should be inside a rounded rectangle with a teal background (e.g., #a7d8d4), white text, and padding. It should be uppercase and have letter spacing.
 
-Here is the CV HTML content:
+  **Left Column:**
+  - The profile picture (\`.profile-pic\`) must be circular (border-radius: 50%).
+  - Section headings (\`h2\`) in the left column should be uppercase, a dark teal color, and have a border-bottom.
+  - The contact list icons (\`ul.contact-list svg\`) should be small (e.g., 16px) and vertically aligned with the text.
+  - Skills should be presented as a simple list.
+  - Key achievements (\`.achievements-list\`) should have a small icon (like a bullet point) before each \`h3\`.
 
-{{{cvHtml}}}
+  **Right Column:**
+  - Section headings (\`h2\`) should be uppercase, a dark teal color (e.g., #4db6ac). They should have a border-bottom.
+  - Experience section (\`.experience .job\`):
+    - Use flexbox to align job title/location and company/dates on separate lines but with items spaced out.
+    - Job titles (\`h3\`) should be bold.
+  - Languages section (\`.language-item\`) should show proficiency with filled and empty dots. Use flexbox. \`.dot.filled\` should have a background color.
+
+  **General Typography & Colors:**
+  - Body font: 'Alegreya', a serif font.
+  - Heading font: 'Belleza', a sans-serif font.
+  - Primary color (teals): #a7d8d4 (light), #4db6ac (medium), #2F7C76 (dark).
+  - Text color: Dark grey (e.g., #333) for body, slightly lighter for subheadings.
+  - Lists should not have default browser styling (list-style: none; padding: 0).
+
+  Please generate ONLY the CSS code to style the following HTML:
+  \`\`\`html
+  {{{cvHtml}}}
+  \`\`\`
+  Do not include the \`\`\`css markdown specifier in your output. Just return the raw CSS.
 `,
 });
 

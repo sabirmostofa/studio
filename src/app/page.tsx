@@ -92,9 +92,7 @@ export default function Home() {
         </script>
       </head>
       <body>
-        <div class="cv-container">
-         ${cvHtml}
-        </div>
+        ${cvHtml}
       </body>
     </html>
   `;
