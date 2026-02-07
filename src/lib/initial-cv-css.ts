@@ -195,7 +195,9 @@ h2 {
     box-shadow: none;
     border: none;
     width: 100%;
-    height: 100%;
+  }
+  section, .job, .education-item {
+    break-inside: avoid;
   }
   .sidebar, .subtitle, .dot.filled, .impact-highlight {
     -webkit-print-color-adjust: exact;

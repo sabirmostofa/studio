@@ -73,11 +73,11 @@ Use hsl() CSS functions with the CSS variables available from the theme for all 
       - Add a \`@media print\` block.
       - Inside, the print output MUST look identical to the screen view.
       - Add \`@page { size: A4; margin: 0; }\` to control the print page.
-      - Reset body margins for printing: \`body { margin: 0; }\`.
-      - Remove the box-shadow from \`.cv-wrapper\` for a cleaner print.
-      - To force the browser to print background colors and images, add \`-webkit-print-color-adjust: exact; print-color-adjust: exact;\` to \`body\` and any elements with backgrounds (like \`.sidebar\`, \`.subtitle\`, \`.dot.filled\`).
-      - DO NOT alter the two-column layout. It must remain \`display: flex\`.
-      - DO NOT remove colors or force text to black.
+      - For the \`body\`, reset margins (\`margin: 0;\`) and ensure background colors and images are printed by adding \`-webkit-print-color-adjust: exact; print-color-adjust: exact;\`.
+      - For the main \`.cv-wrapper\`, remove any margin, box-shadow, and border to ensure it fits the page cleanly. Set its width to \`100%\` and ensure its height adjusts to the content.
+      - To prevent sections from awkwardly splitting across pages (if the content is long), add \`break-inside: avoid;\` to elements like \`section\`, \`.job\`, and \`.education-item\`.
+      - Ensure all background colors (like on \`.sidebar\`, \`.subtitle\`, \`.dot.filled\`, etc.) are printed by applying \`-webkit-print-color-adjust: exact; print-color-adjust: exact;\` to them.
+      - DO NOT alter the two-column flex layout or force text to black. The print view must match the screen view.
 
   Also, consider the following user suggestions for styling:
   {{{suggestions}}}
