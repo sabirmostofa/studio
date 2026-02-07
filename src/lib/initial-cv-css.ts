@@ -32,7 +32,7 @@ h1, h2, h3 {
 .sidebar {
   flex-basis: 35%;
   flex-shrink: 0;
-  background-color: hsl(var(--muted));
+  background-color: hsl(var(--sidebar-bg));
   padding: 1.5rem;
   border-right: 1px solid hsl(var(--border));
 }

@@ -31,11 +31,13 @@ type InputType = "text" | "html" | "image";
 
 const DEFAULT_PRIMARY_COLOR_HSL = { h: 221, s: 26, l: 14 };
 const DEFAULT_BACKGROUND_COLOR_HSL = { h: 0, s: 0, l: 100 };
-const DEFAULT_ACCENT_COLOR_HSL = { h: 160, s: 84, l: 39 };
+const DEFAULT_ACCENT_COLOR_HSL = { h: 154, s: 83, l: 40 };
+const DEFAULT_SIDEBAR_COLOR_HSL = { h: 220, s: 16, l: 91 };
 
 const DEFAULT_PRIMARY_COLOR_HEX = "#1A202C";
 const DEFAULT_BACKGROUND_COLOR_HEX = "#FFFFFF";
 const DEFAULT_ACCENT_COLOR_HEX = "#10B981";
+const DEFAULT_SIDEBAR_COLOR_HEX = "#E4E7EB";
 
 export default function Home() {
   const [cvHtml, setCvHtml] = useState(initialCvHtml);
@@ -55,40 +57,34 @@ export default function Home() {
     DEFAULT_BACKGROUND_COLOR_HSL
   );
   const [accentColor, setAccentColor] = useState(DEFAULT_ACCENT_COLOR_HSL);
+  const [sidebarColor, setSidebarColor] = useState(DEFAULT_SIDEBAR_COLOR_HSL);
 
   const [primaryHex, setPrimaryHex] = useState(DEFAULT_PRIMARY_COLOR_HEX);
   const [backgroundHex, setBackgroundHex] = useState(
     DEFAULT_BACKGROUND_COLOR_HEX
   );
   const [accentHex, setAccentHex] = useState(DEFAULT_ACCENT_COLOR_HEX);
+  const [sidebarHex, setSidebarHex] = useState(DEFAULT_SIDEBAR_COLOR_HEX);
 
   const [zoom, setZoom] = useState(0.75);
 
   useEffect(() => {
-    document.documentElement.style.setProperty(
-      "--primary",
-      `${primaryColor.h} ${primaryColor.s}% ${primaryColor.l}%`
-    );
     setPrimaryHex(hslToHex(primaryColor.h, primaryColor.s, primaryColor.l));
   }, [primaryColor]);
 
   useEffect(() => {
-    document.documentElement.style.setProperty(
-      "--background",
-      `${backgroundColor.h} ${backgroundColor.s}% ${backgroundColor.l}%`
-    );
     setBackgroundHex(
       hslToHex(backgroundColor.h, backgroundColor.s, backgroundColor.l)
     );
   }, [backgroundColor]);
 
   useEffect(() => {
-    document.documentElement.style.setProperty(
-      "--accent",
-      `${accentColor.h} ${accentColor.s}% ${accentColor.l}%`
-    );
     setAccentHex(hslToHex(accentColor.h, accentColor.s, accentColor.l));
   }, [accentColor]);
+
+  useEffect(() => {
+    setSidebarHex(hslToHex(sidebarColor.h, sidebarColor.s, sidebarColor.l));
+  }, [sidebarColor]);
 
   const handleColorChange =
     (setter: Function) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -111,11 +107,23 @@ export default function Home() {
   };
 
   const handleCopyColor = (color: string) => {
-    navigator.clipboard.writeText(color);
-    toast({
-      title: "Copied!",
-      description: `${color} copied to clipboard.`,
-    });
+    try {
+      if (!navigator.clipboard) {
+        throw new Error("Clipboard API not available");
+      }
+      navigator.clipboard.writeText(color);
+      toast({
+        title: "Copied!",
+        description: `${color} copied to clipboard.`,
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Copy Failed",
+        description:
+          "Copying to the clipboard is not supported in this environment.",
+      });
+    }
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -191,14 +199,16 @@ export default function Home() {
       });
     }
   };
-  
+
   const handleResetColors = () => {
     setPrimaryColor(DEFAULT_PRIMARY_COLOR_HSL);
     setBackgroundColor(DEFAULT_BACKGROUND_COLOR_HSL);
     setAccentColor(DEFAULT_ACCENT_COLOR_HSL);
+    setSidebarColor(DEFAULT_SIDEBAR_COLOR_HSL);
     setPrimaryHex(DEFAULT_PRIMARY_COLOR_HEX);
     setBackgroundHex(DEFAULT_BACKGROUND_COLOR_HEX);
     setAccentHex(DEFAULT_ACCENT_COLOR_HEX);
+    setSidebarHex(DEFAULT_SIDEBAR_COLOR_HEX);
     toast({
       title: "Colors Reset",
       description: "The theme colors have been reset to their default values.",
@@ -232,6 +242,7 @@ export default function Home() {
             --border: 220 13% 85%;
             --input: 220 13% 90%;
             --ring: 213 31% 50%;
+            --sidebar-bg: ${sidebarColor.h} ${sidebarColor.s}% ${sidebarColor.l}%;
           }
           body { 
             opacity: 0; 
@@ -392,7 +403,7 @@ export default function Home() {
                   Reset
                 </Button>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="primary-color-hex">Primary</Label>
                   <div className="flex items-center gap-2">
@@ -486,6 +497,37 @@ export default function Home() {
                     </Button>
                   </div>
                 </div>
+                <div className="space-y-2">
+                  <Label htmlFor="sidebar-color-hex">Sidebar</Label>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      id="sidebar-color-hex"
+                      value={sidebarHex}
+                      onChange={(e) =>
+                        handleHexInputChange(
+                          e.target.value,
+                          setSidebarHex,
+                          setSidebarColor
+                        )
+                      }
+                    />
+                    <Input
+                      id="sidebar-color-picker"
+                      type="color"
+                      value={sidebarHex}
+                      onChange={handleColorChange(setSidebarColor)}
+                      className="p-1 h-10 w-12 shrink-0"
+                    />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      title="Copy color"
+                      onClick={() => handleCopyColor(sidebarHex)}
+                    >
+                      <Copy />
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -535,7 +577,7 @@ export default function Home() {
                         transformOrigin: "top center",
                         transition: "transform 0.2s ease-out",
                       }}
-                      key={`${cvHtml}${generatedCss}${primaryColor.h}${backgroundColor.h}${accentColor.h}`}
+                      key={`${cvHtml}${generatedCss}${primaryColor.h}${backgroundColor.h}${accentColor.h}${sidebarColor.h}`}
                     />
                   </div>
                 ) : (

@@ -30,9 +30,17 @@ const prompt = ai.definePrompt({
   name: 'suggestStyleImprovementsPrompt',
   input: {schema: SuggestStyleImprovementsInputSchema},
   output: {schema: SuggestStyleImprovementsOutputSchema},
-  prompt: `You are an expert CSS designer. Your task is to create a professional, modern, two-column CV stylesheet based on the provided HTML. Use hsl() CSS functions with the CSS variables available from the theme for all colors (e.g. \`color: hsl(var(--foreground));\`, \`background-color: hsl(var(--background));\`).
+  prompt: `You are an expert CSS designer. Your task is to create a professional, modern, two-column CV stylesheet based on the provided HTML.
 
-  **Instructions:**
+**Color Palette:**
+Use hsl() CSS functions with the CSS variables available from the theme for all colors. The primary colors you MUST use are:
+- \`--primary\`: For main headers and important elements.
+- \`--background\`: For the main page background (outside the CV card).
+- \`--accent\`: For highlights and subtitles.
+- \`--sidebar-bg\`: For the background of the left sidebar column.
+- Standard theme variables like \`--foreground\`, \`--card\`, \`--border\`, \`--muted\` etc. are also available for other elements.
+
+**Instructions:**
   1.  **Base Styles:**
       - Set \`box-sizing: border-box;\` on all elements.
       - Set basic font styles on the \`body\`. Use 'Alegreya' as the font family. Use \`background-color: hsl(var(--background));\` and \`color: hsl(var(--foreground));\`.
@@ -44,7 +52,7 @@ const prompt = ai.definePrompt({
       - It should have a max-width and be centered (e.g. \`max-width: 900px; margin: 2rem auto;\`). Add a subtle box-shadow. Use \`background-color: hsl(var(--card));\`.
   4.  **Left Column (\`.sidebar\`):**
       - Set \`flex-basis: 35%;\` and \`flex-shrink: 0;\`.
-      - Give it a different background color like \`background-color: hsl(var(--muted));\` and padding (e.g., 1.5rem).
+      - Use \`background-color: hsl(var(--sidebar-bg));\` for its background, and add padding (e.g., 1.5rem).
   5.  **Right Column (\`.main-content\`):**
       - Set \`flex-basis: 65%;\` and \`flex-grow: 1;\`.
       - Give it padding (e.g., 1.5rem).
