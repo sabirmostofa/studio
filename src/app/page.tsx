@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Copy,
   FileCode,
@@ -31,13 +31,15 @@ type InputType = "text" | "html" | "image";
 
 const DEFAULT_PRIMARY_COLOR_HSL = { h: 221, s: 26, l: 14 };
 const DEFAULT_BACKGROUND_COLOR_HSL = { h: 0, s: 0, l: 100 };
-const DEFAULT_ACCENT_COLOR_HSL = { h: 154, s: 83, l: 40 };
-const DEFAULT_SIDEBAR_COLOR_HSL = { h: 220, s: 16, l: 91 };
+const DEFAULT_ACCENT_COLOR_HSL = { h: 160, s: 84, l: 39 };
+const DEFAULT_SIDEBAR_COLOR_HSL = { h: 0, s: 0, l: 98 };
+
 
 const DEFAULT_PRIMARY_COLOR_HEX = "#1A202C";
 const DEFAULT_BACKGROUND_COLOR_HEX = "#FFFFFF";
 const DEFAULT_ACCENT_COLOR_HEX = "#10B981";
-const DEFAULT_SIDEBAR_COLOR_HEX = "#E4E7EB";
+const DEFAULT_SIDEBAR_COLOR_HEX = "#FAFAFA";
+
 
 export default function Home() {
   const [cvHtml, setCvHtml] = useState(initialCvHtml);
@@ -67,6 +69,11 @@ export default function Home() {
   const [sidebarHex, setSidebarHex] = useState(DEFAULT_SIDEBAR_COLOR_HEX);
 
   const [zoom, setZoom] = useState(0.75);
+  
+  const previewContainerRef = useRef<HTMLDivElement>(null);
+  const isDraggingRef = useRef(false);
+  const dragStartRef = useRef({ x: 0, y: 0 });
+  const scrollStartRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     setPrimaryHex(hslToHex(primaryColor.h, primaryColor.s, primaryColor.l));
@@ -213,6 +220,35 @@ export default function Home() {
       title: "Colors Reset",
       description: "The theme colors have been reset to their default values.",
     });
+  };
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!previewContainerRef.current) return;
+    isDraggingRef.current = true;
+    dragStartRef.current = { x: e.clientX, y: e.clientY };
+    scrollStartRef.current = {
+      x: previewContainerRef.current.scrollLeft,
+      y: previewContainerRef.current.scrollTop,
+    };
+    previewContainerRef.current.style.cursor = 'grabbing';
+    previewContainerRef.current.style.userSelect = 'none';
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDraggingRef.current || !previewContainerRef.current) return;
+    e.preventDefault();
+    const dx = e.clientX - dragStartRef.current.x;
+    const dy = e.clientY - dragStartRef.current.y;
+    previewContainerRef.current.scrollLeft = scrollStartRef.current.x - dx;
+    previewContainerRef.current.scrollTop = scrollStartRef.current.y - dy;
+  };
+
+  const handleMouseUpOrLeave = () => {
+    if (previewContainerRef.current) {
+        previewContainerRef.current.style.cursor = 'grab';
+        previewContainerRef.current.style.userSelect = 'auto';
+    }
+    isDraggingRef.current = false;
   };
 
   const iframeSrcDoc = `
@@ -564,12 +600,19 @@ export default function Home() {
                     <p>Generating your CV...</p>
                   </div>
                 ) : cvHtml ? (
-                  <div className="w-full h-full overflow-auto bg-muted/20 p-8">
+                  <div
+                    ref={previewContainerRef}
+                    className="w-full h-full overflow-auto bg-muted/20 p-8 cursor-grab"
+                    onMouseDown={handleMouseDown}
+                    onMouseMove={handleMouseMove}
+                    onMouseUp={handleMouseUpOrLeave}
+                    onMouseLeave={handleMouseUpOrLeave}
+                  >
                     <iframe
                       id="cv-preview-iframe"
                       srcDoc={iframeSrcDoc}
                       title="CV Preview"
-                      className="mx-auto block border-0 shadow-lg"
+                      className="mx-auto block border-0 shadow-lg pointer-events-none"
                       style={{
                         width: "900px",
                         height: "1273px",
