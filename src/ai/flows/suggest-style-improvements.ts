@@ -13,6 +13,7 @@ import {z} from 'genkit';
 
 const SuggestStyleImprovementsInputSchema = z.object({
   cvHtml: z.string().describe('The HTML content of the CV.'),
+  suggestions: z.string().optional().describe('Additional styling suggestions from the user.'),
 });
 export type SuggestStyleImprovementsInput = z.infer<typeof SuggestStyleImprovementsInputSchema>;
 
@@ -66,6 +67,9 @@ const prompt = ai.definePrompt({
       - Reset flex properties for columns: \`.sidebar, .main-content { flex-basis: auto; width: 100%; padding: 0; }\`
       - Ensure a clean, ink-friendly look: remove background colors, set text to black (\`color: #000 !important;\`).
       - Reduce image sizes if necessary: \`.profile-pic { max-width: 150px; }\`
+
+  Also, consider the following user suggestions for styling:
+  {{{suggestions}}}
 
   Generate ONLY the CSS code to style the following HTML. Do not add any explanations or comments in the CSS.
   Do not include the \`\`\`css markdown specifier in your output. Just return the raw CSS.

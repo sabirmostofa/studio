@@ -1,98 +1,138 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Download, FileText, Loader2, Wand2 } from "lucide-react";
+import {
+  Download,
+  FileCode,
+  FileImage,
+  FileText,
+  Loader2,
+  Type,
+  Wand2,
+} from "lucide-react";
 
-import { generateStyles } from "@/app/actions";
+import { generateCvFromRawInput, generateStyles } from "@/app/actions";
 import { Logo } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { initialCvHtml } from "@/lib/initial-cv-html";
 import { hexToHsl, hslToHex } from "@/lib/utils";
 
+type InputType = "text" | "html" | "image";
+
 export default function Home() {
   const [cvHtml, setCvHtml] = useState(initialCvHtml);
+  const [textCv, setTextCv] = useState(
+    "Mila Allen, Startup Founder, based in Denver..."
+  );
+  const [imageCv, setImageCv] = useState<string | null>(null);
+  const [inputType, setInputType] = useState<InputType>("html");
+  const [additionalSuggestions, setAdditionalSuggestions] = useState("");
+
   const [generatedCss, setGeneratedCss] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   const [primaryColor, setPrimaryColor] = useState({ h: 213, s: 31, l: 50 });
-  const [backgroundColor, setBackgroundColor] = useState({ h: 220, s: 17, l: 95 });
+  const [backgroundColor, setBackgroundColor] = useState({
+    h: 220,
+    s: 17,
+    l: 95,
+  });
   const [accentColor, setAccentColor] = useState({ h: 263, s: 19, l: 64 });
-  
+
   useEffect(() => {
-    document.documentElement.style.setProperty('--primary', `${primaryColor.h} ${primaryColor.s}% ${primaryColor.l}%`);
+    document.documentElement.style.setProperty(
+      "--primary",
+      `${primaryColor.h} ${primaryColor.s}% ${primaryColor.l}%`
+    );
   }, [primaryColor]);
 
   useEffect(() => {
-    document.documentElement.style.setProperty('--background', `${backgroundColor.h} ${backgroundColor.s}% ${backgroundColor.l}%`);
+    document.documentElement.style.setProperty(
+      "--background",
+      `${backgroundColor.h} ${backgroundColor.s}% ${backgroundColor.l}%`
+    );
   }, [backgroundColor]);
-  
+
   useEffect(() => {
-    document.documentElement.style.setProperty('--accent', `${accentColor.h} ${accentColor.s}% ${accentColor.l}%`);
+    document.documentElement.style.setProperty(
+      "--accent",
+      `${accentColor.h} ${accentColor.s}% ${accentColor.l}%`
+    );
   }, [accentColor]);
 
+  const handleColorChange =
+    (setter: Function) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const hsl = hexToHsl(e.target.value);
+      if (hsl) {
+        setter(hsl);
+      }
+    };
 
-  const handleColorChange = (setter: Function) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const hsl = hexToHsl(e.target.value);
-    if (hsl) {
-      setter(hsl);
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageCv(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  const handleGenerateStyles = async () => {
+  const handleGenerate = async () => {
     setIsLoading(true);
-    const result = await generateStyles(cvHtml);
-    if (result.success && result.css) {
-      setGeneratedCss(result.css);
+    let result;
+
+    if (inputType === "html") {
+      result = await generateStyles(cvHtml, additionalSuggestions);
+      if (result.success && result.css) {
+        setGeneratedCss(result.css);
+      }
+    } else if (inputType === "text") {
+      result = await generateCvFromRawInput(
+        "text",
+        textCv,
+        additionalSuggestions
+      );
+      if (result.success && result.html && result.css) {
+        setCvHtml(result.html);
+        setGeneratedCss(result.css);
+      }
+    } else if (inputType === "image" && imageCv) {
+      result = await generateCvFromRawInput(
+        "image",
+        imageCv,
+        additionalSuggestions
+      );
+      if (result.success && result.html && result.css) {
+        setCvHtml(result.html);
+        setGeneratedCss(result.css);
+      }
+    }
+
+    if (result?.success) {
       toast({
         title: "Success!",
-        description: "New styles have been generated for your CV.",
+        description: "Your CV has been generated.",
       });
     } else {
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
-        description: result.error || "There was a problem with your request.",
+        description:
+          result?.error || "There was a problem with your request.",
       });
     }
     setIsLoading(false);
   };
 
-  const handleDownload = () => {
-    const fullHtml = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your CV</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alegreya&family=Belleza&display=swap" rel="stylesheet">
-  <style>
-    ${generatedCss}
-  </style>
-</head>
-<body>
-  ${cvHtml}
-</body>
-</html>`;
-    const blob = new Blob([fullHtml], { type: "text/html" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "styled-cv.html";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-  
   const handleDownloadPdf = () => {
     const iframe = document.querySelector("iframe");
     if (iframe?.contentWindow) {
@@ -169,26 +209,102 @@ export default function Home() {
       <main className="flex-grow container mx-auto p-4 md:p-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="flex flex-col space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="cv-html" className="text-lg font-headline">
-                Your CV HTML
+            <Tabs
+              value={inputType}
+              onValueChange={(value) => setInputType(value as InputType)}
+              className="w-full"
+            >
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="html">
+                  <FileCode className="mr-2" />
+                  HTML
+                </TabsTrigger>
+                <TabsTrigger value="text">
+                  <Type className="mr-2" />
+                  Text
+                </TabsTrigger>
+                <TabsTrigger value="image">
+                  <FileImage className="mr-2" />
+                  Image
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="html" className="mt-4">
+                <Label htmlFor="cv-html" className="text-lg font-headline">
+                  Your CV HTML
+                </Label>
+                 <p className="text-sm text-muted-foreground mb-2">
+                  Paste the body content of your CV's HTML below.
+                </p>
+                <Textarea
+                  id="cv-html"
+                  value={cvHtml}
+                  onChange={(e) => setCvHtml(e.target.value)}
+                  className="flex-grow h-[40vh] min-h-[300px] font-mono text-sm resize-none"
+                  placeholder="Paste your CV's HTML body here..."
+                />
+              </TabsContent>
+              <TabsContent value="text" className="mt-4">
+                <Label htmlFor="cv-text" className="text-lg font-headline">
+                  Your CV Text
+                </Label>
+                 <p className="text-sm text-muted-foreground mb-2">
+                  Paste the entire text content of your CV below.
+                </p>
+                <Textarea
+                  id="cv-text"
+                  value={textCv}
+                  onChange={(e) => setTextCv(e.target.value)}
+                  className="flex-grow h-[40vh] min-h-[300px] text-sm resize-none"
+                  placeholder="Paste your CV text here..."
+                />
+              </TabsContent>
+              <TabsContent value="image" className="mt-4">
+                <Label htmlFor="cv-image" className="text-lg font-headline">
+                  Your CV Image
+                </Label>
+                 <p className="text-sm text-muted-foreground mb-2">
+                  Upload an image of your CV.
+                </p>
+                <Input
+                  id="cv-image"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="mb-4"
+                />
+                {imageCv && (
+                  <div className="p-2 border rounded-md max-h-[26vh] overflow-auto">
+                    <img
+                      src={imageCv}
+                      alt="CV preview"
+                      className="w-full h-auto"
+                    />
+                  </div>
+                )}
+              </TabsContent>
+            </Tabs>
+
+            <div className="space-y-2 pt-4">
+              <Label htmlFor="suggestions" className="text-lg font-headline">
+                Styling Suggestions
               </Label>
               <p className="text-sm text-muted-foreground">
-                Paste the body content of your CV's HTML below. The initial
-                content is just an example.
+                Enter any specific styling requests, e.g., "Make the headings
+                green" or "Use a serif font for the body text."
               </p>
+              <Textarea
+                id="suggestions"
+                value={additionalSuggestions}
+                onChange={(e) => setAdditionalSuggestions(e.target.value)}
+                className="h-24 text-sm resize-none"
+                placeholder="Enter styling suggestions here..."
+              />
             </div>
-            <Textarea
-              id="cv-html"
-              value={cvHtml}
-              onChange={(e) => setCvHtml(e.target.value)}
-              className="flex-grow h-[50vh] min-h-[400px] font-mono text-sm resize-none"
-              placeholder="Paste your CV's HTML body here..."
-            />
-            <div className="flex flex-col sm:flex-row gap-4 pt-2 flex-wrap">
+
+            <div className="flex flex-col sm:flex-row gap-4 pt-4 flex-wrap">
               <Button
-                onClick={handleGenerateStyles}
-                disabled={isLoading}
+                onClick={handleGenerate}
+                disabled={isLoading || (inputType === "image" && !imageCv)}
                 className="w-full sm:w-auto"
                 size="lg"
               >
@@ -197,19 +313,9 @@ export default function Home() {
                 ) : (
                   <Wand2 className="mr-2 h-4 w-4" />
                 )}
-                Generate Styles
+                Generate CV
               </Button>
               <Button
-                onClick={handleDownload}
-                variant="outline"
-                disabled={!generatedCss}
-                className="w-full sm:w-auto"
-                size="lg"
-              >
-                <Download className="mr-2 h-4 w-4" />
-                Download HTML
-              </Button>
-               <Button
                 onClick={handleDownloadPdf}
                 variant="outline"
                 disabled={!generatedCss}
@@ -220,43 +326,55 @@ export default function Home() {
                 Download PDF
               </Button>
             </div>
-             <div className="space-y-4 pt-8">
+            <div className="space-y-4 pt-8">
               <h3 className="text-lg font-headline">Theme Customization</h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                      <Label htmlFor="primary-color">Primary Color</Label>
-                      <Input
-                          id="primary-color"
-                          type="color"
-                          value={hslToHex(primaryColor.h, primaryColor.s, primaryColor.l)}
-                          onChange={handleColorChange(setPrimaryColor)}
-                          className="p-1 h-10"
-                      />
-                  </div>
-                  <div className="space-y-2">
-                      <Label htmlFor="background-color">Background Color</Label>
-                      <Input
-                          id="background-color"
-                          type="color"
-                          value={hslToHex(backgroundColor.h, backgroundColor.s, backgroundColor.l)}
-                          onChange={handleColorChange(setBackgroundColor)}
-                          className="p-1 h-10"
-                      />
-                  </div>
-                  <div className="space-y-2">
-                      <Label htmlFor="accent-color">Accent Color</Label>
-                      <Input
-                          id="accent-color"
-                          type="color"
-                          value={hslToHex(accentColor.h, accentColor.s, accentColor.l)}
-                          onChange={handleColorChange(setAccentColor)}
-                          className="p-1 h-10"
-                      />
-                  </div>
+                <div className="space-y-2">
+                  <Label htmlFor="primary-color">Primary Color</Label>
+                  <Input
+                    id="primary-color"
+                    type="color"
+                    value={hslToHex(
+                      primaryColor.h,
+                      primaryColor.s,
+                      primaryColor.l
+                    )}
+                    onChange={handleColorChange(setPrimaryColor)}
+                    className="p-1 h-10"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="background-color">Background Color</Label>
+                  <Input
+                    id="background-color"
+                    type="color"
+                    value={hslToHex(
+                      backgroundColor.h,
+                      backgroundColor.s,
+                      backgroundColor.l
+                    )}
+                    onChange={handleColorChange(setBackgroundColor)}
+                    className="p-1 h-10"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="accent-color">Accent Color</Label>
+                  <Input
+                    id="accent-color"
+                    type="color"
+                    value={hslToHex(
+                      accentColor.h,
+                      accentColor.s,
+                      accentColor.l
+                    )}
+                    onChange={handleColorChange(setAccentColor)}
+                    className="p-1 h-10"
+                  />
+                </div>
               </div>
             </div>
           </div>
-          <div className="space-y-2 lg:h-[calc(50vh+260px)] min-h-[480px]">
+          <div className="space-y-2 lg:h-[calc(100vh - 12rem)] min-h-[480px]">
             <Label className="text-lg font-headline">Preview</Label>
             <Card className="h-full w-full overflow-hidden shadow-lg border-2">
               <CardContent className="p-0 h-full">
@@ -265,7 +383,7 @@ export default function Home() {
                     srcDoc={iframeSrcDoc}
                     title="CV Preview"
                     className="w-full h-full border-0"
-                    key={`${generatedCss}${primaryColor.h}${backgroundColor.h}${accentColor.h}`}
+                    key={`${cvHtml}${generatedCss}${primaryColor.h}${backgroundColor.h}${accentColor.h}`}
                   />
                 ) : (
                   <div className="flex items-center justify-center h-full text-muted-foreground">
