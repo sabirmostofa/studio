@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 import "./globals.css";
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body className={cn("font-body antialiased", "min-h-screen bg-background")}>
         {children}
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );
