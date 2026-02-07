@@ -59,7 +59,13 @@ const prompt = ai.definePrompt({
       - Use \`display: flex;\` with \`justify-content: space-between;\` to place elements on opposite ends.
   10. **Language Dots (\`.language-item\`, \`.dots\`):**
       - Use flexbox. Style \`.dot.filled\` with \`background-color: hsl(var(--primary));\` and \`.dot\` (unfilled) with a border using \`hsl(var(--border));\`.
-  11. **Print Styles:**
+  11. **Responsiveness:**
+      - Add a \`@media screen and (max-width: 768px)\` block.
+      - Inside, make the main layout stack vertically: \`.cv-wrapper { flex-direction: column; }\`.
+      - Reset flex basis for columns: \`.sidebar, .main-content { flex-basis: auto; }\`.
+      - Remove borders between sections for a cleaner mobile view: \`.sidebar { border-right: none; border-bottom: 1px solid hsl(var(--border)); }\`.
+      - Adjust padding for smaller screens: \`.cv-wrapper { margin: 1rem; }\`, \`.sidebar, .main-content { padding: 1rem; }\`
+  12. **Print Styles:**
       - Add a \`@media print\` block.
       - Inside, make the layout single-column. Set \`.cv-wrapper { display: block; max-width: 100%; margin: 0; box-shadow: none; border: none; }\`
       - Reset flex properties for columns: \`.sidebar, .main-content { flex-basis: auto; width: 100%; padding: 0; }\`

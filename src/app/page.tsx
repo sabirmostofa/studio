@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import {
+  Copy,
   FileCode,
   FileImage,
   FileText,
@@ -46,17 +47,31 @@ export default function Home() {
   });
   const [accentColor, setAccentColor] = useState({ h: 145, s: 45, l: 58 });
 
+  const [primaryHex, setPrimaryHex] = useState(
+    hslToHex(primaryColor.h, primaryColor.s, primaryColor.l)
+  );
+  const [backgroundHex, setBackgroundHex] = useState(
+    hslToHex(backgroundColor.h, backgroundColor.s, backgroundColor.l)
+  );
+  const [accentHex, setAccentHex] = useState(
+    hslToHex(accentColor.h, accentColor.s, accentColor.l)
+  );
+
   useEffect(() => {
     document.documentElement.style.setProperty(
       "--primary",
       `${primaryColor.h} ${primaryColor.s}% ${primaryColor.l}%`
     );
+    setPrimaryHex(hslToHex(primaryColor.h, primaryColor.s, primaryColor.l));
   }, [primaryColor]);
 
   useEffect(() => {
     document.documentElement.style.setProperty(
       "--background",
       `${backgroundColor.h} ${backgroundColor.s}% ${backgroundColor.l}%`
+    );
+    setBackgroundHex(
+      hslToHex(backgroundColor.h, backgroundColor.s, backgroundColor.l)
     );
   }, [backgroundColor]);
 
@@ -65,6 +80,7 @@ export default function Home() {
       "--accent",
       `${accentColor.h} ${accentColor.s}% ${accentColor.l}%`
     );
+    setAccentHex(hslToHex(accentColor.h, accentColor.s, accentColor.l));
   }, [accentColor]);
 
   const handleColorChange =
@@ -74,6 +90,26 @@ export default function Home() {
         setter(hsl);
       }
     };
+
+  const handleHexInputChange = (
+    hexValue: string,
+    setHex: Function,
+    setHsl: Function
+  ) => {
+    setHex(hexValue);
+    const hsl = hexToHsl(hexValue);
+    if (hsl) {
+      setHsl(hsl);
+    }
+  };
+
+  const handleCopyColor = (color: string) => {
+    navigator.clipboard.writeText(color);
+    toast({
+      title: "Copied!",
+      description: `${color} copied to clipboard.`,
+    });
+  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -134,7 +170,9 @@ export default function Home() {
   };
 
   const handleDownloadPdf = () => {
-    const iframe = document.getElementById('cv-preview-iframe') as HTMLIFrameElement | null;
+    const iframe = document.getElementById(
+      "cv-preview-iframe"
+    ) as HTMLIFrameElement | null;
     if (iframe?.contentWindow) {
       iframe.contentWindow.focus();
       iframe.contentWindow.print();
@@ -232,7 +270,7 @@ export default function Home() {
                 <Label htmlFor="cv-html" className="text-lg font-headline">
                   Your CV HTML
                 </Label>
-                 <p className="text-sm text-muted-foreground mb-2">
+                <p className="text-sm text-muted-foreground mb-2">
                   Paste the body content of your CV's HTML below.
                 </p>
                 <Textarea
@@ -247,7 +285,7 @@ export default function Home() {
                 <Label htmlFor="cv-text" className="text-lg font-headline">
                   Your CV Text
                 </Label>
-                 <p className="text-sm text-muted-foreground mb-2">
+                <p className="text-sm text-muted-foreground mb-2">
                   Paste the entire text content of your CV below.
                 </p>
                 <Textarea
@@ -262,7 +300,7 @@ export default function Home() {
                 <Label htmlFor="cv-image" className="text-lg font-headline">
                   Your CV Image
                 </Label>
-                 <p className="text-sm text-muted-foreground mb-2">
+                <p className="text-sm text-muted-foreground mb-2">
                   Upload an image of your CV.
                 </p>
                 <Input
@@ -330,46 +368,97 @@ export default function Home() {
               <h3 className="text-lg font-headline">Theme Customization</h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="primary-color">Primary Color</Label>
-                  <Input
-                    id="primary-color"
-                    type="color"
-                    value={hslToHex(
-                      primaryColor.h,
-                      primaryColor.s,
-                      primaryColor.l
-                    )}
-                    onChange={handleColorChange(setPrimaryColor)}
-                    className="p-1 h-10"
-                  />
+                  <Label htmlFor="primary-color-hex">Primary</Label>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      id="primary-color-hex"
+                      value={primaryHex}
+                      onChange={(e) =>
+                        handleHexInputChange(
+                          e.target.value,
+                          setPrimaryHex,
+                          setPrimaryColor
+                        )
+                      }
+                    />
+                    <Input
+                      id="primary-color-picker"
+                      type="color"
+                      value={primaryHex}
+                      onChange={handleColorChange(setPrimaryColor)}
+                      className="p-1 h-10 w-12 shrink-0"
+                    />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      title="Copy color"
+                      onClick={() => handleCopyColor(primaryHex)}
+                    >
+                      <Copy />
+                    </Button>
+                  </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="background-color">Background Color</Label>
-                  <Input
-                    id="background-color"
-                    type="color"
-                    value={hslToHex(
-                      backgroundColor.h,
-                      backgroundColor.s,
-                      backgroundColor.l
-                    )}
-                    onChange={handleColorChange(setBackgroundColor)}
-                    className="p-1 h-10"
-                  />
+                  <Label htmlFor="background-color-hex">Background</Label>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      id="background-color-hex"
+                      value={backgroundHex}
+                      onChange={(e) =>
+                        handleHexInputChange(
+                          e.target.value,
+                          setBackgroundHex,
+                          setBackgroundColor
+                        )
+                      }
+                    />
+                    <Input
+                      id="background-color-picker"
+                      type="color"
+                      value={backgroundHex}
+                      onChange={handleColorChange(setBackgroundColor)}
+                      className="p-1 h-10 w-12 shrink-0"
+                    />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      title="Copy color"
+                      onClick={() => handleCopyColor(backgroundHex)}
+                    >
+                      <Copy />
+                    </Button>
+                  </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="accent-color">Accent Color</Label>
-                  <Input
-                    id="accent-color"
-                    type="color"
-                    value={hslToHex(
-                      accentColor.h,
-                      accentColor.s,
-                      accentColor.l
-                    )}
-                    onChange={handleColorChange(setAccentColor)}
-                    className="p-1 h-10"
-                  />
+                  <Label htmlFor="accent-color-hex">Accent</Label>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      id="accent-color-hex"
+                      value={accentHex}
+                      onChange={(e) =>
+                        handleHexInputChange(
+                          e.target.value,
+                          setAccentHex,
+                          setAccentColor
+                        )
+                      }
+                    />
+                    <Input
+                      id="accent-color-picker"
+                      type="color"
+                      value={accentHex}
+                      onChange={handleColorChange(setAccentColor)}
+                      className="p-1 h-10 w-12 shrink-0"
+                    />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      title="Copy color"
+                      onClick={() => handleCopyColor(accentHex)}
+                    >
+                      <Copy />
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -379,7 +468,7 @@ export default function Home() {
             <Card className="h-full w-full overflow-hidden shadow-lg border-2">
               <CardContent className="p-0 h-full">
                 {isLoading && !generatedCss ? (
-                   <div className="flex items-center justify-center h-full text-muted-foreground">
+                  <div className="flex items-center justify-center h-full text-muted-foreground">
                     <Loader2 className="mr-2 h-8 w-8 animate-spin" />
                     <p>Generating your CV...</p>
                   </div>

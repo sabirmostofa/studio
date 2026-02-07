@@ -7,6 +7,7 @@ body {
   font-family: 'Alegreya', serif;
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
+  margin: 0;
 }
 
 ul, li {
@@ -172,6 +173,25 @@ h2 {
   border-color: hsl(var(--primary));
 }
 
+@media screen and (max-width: 768px) {
+  .cv-wrapper {
+    flex-direction: column;
+    margin: 1rem;
+    max-width: 100%;
+  }
+  .sidebar {
+    border-right: none;
+    border-bottom: 1px solid hsl(var(--border));
+    flex-basis: auto;
+  }
+  .main-content {
+    flex-basis: auto;
+  }
+  .sidebar, .main-content {
+    padding: 1rem;
+  }
+}
+
 @media print {
   body {
     background-color: #fff;
@@ -206,4 +226,4 @@ h2 {
     border-color: #000 !important;
   }
 }
-`;
+`
