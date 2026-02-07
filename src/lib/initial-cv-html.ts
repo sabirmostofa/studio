@@ -4,40 +4,36 @@ export const initialCvHtml = `
     <section>
       <h2>CONTACTS</h2>
       <ul class="contact-list">
-        <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> m.allen@enhancv.com</li>
-        <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg> My Startup</li>
-        <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Denver, Colorado</li>
+        <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> alex.doe@example.com</li>
+        <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg> alexdoe-portfolio.dev</li>
+        <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> San Francisco, CA</li>
       </ul>
     </section>
     <section>
       <h2>SKILLS</h2>
       <ul class="skills-list">
-        <li>Business Development</li>
-        <li>Market Research</li>
-        <li>Product Strategy</li>
-        <li>Financial Management</li>
-        <li>Entrepreneurship</li>
-        <li>Team Leadership</li>
+        <li>React & Next.js</li>
+        <li>Node.js & Express</li>
+        <li>TypeScript</li>
+        <li>GraphQL & Apollo</li>
+        <li>SQL & NoSQL Databases</li>
+        <li>Cloud Infrastructure (AWS/GCP)</li>
       </ul>
     </section>
     <section>
       <h2>KEY ACHIEVEMENTS</h2>
       <ul class="achievements-list">
         <li>
-          <h3>Secured High-Value Funding</h3>
-          <p>Successfully secured $1.5 million in funding from angel investors by crafting a compelling pitch and demonstrating market viability.</p>
+          <h3>Lead Front-End Overhaul</h3>
+          <p>Led the migration of a legacy front-end to a modern Next.js stack, improving performance by 60% and developer productivity by 40%.</p>
         </li>
         <li>
-          <h3>Innovative Product Development</h3>
-          <p>Led a team that developed a new SaaS product, achieving a 30% market penetration within the first year of launch.</p>
+          <h3>API Design & Implementation</h3>
+          <p>Designed and built a scalable GraphQL API that now serves over 1 million requests per day, with an average response time under 150ms.</p>
         </li>
         <li>
-          <h3>Team Building Excellence</h3>
-          <p>Built a high-performing team of 10, enhancing operational efficiency by implementing Agile methodologies, resulting in a 25% reduction in project turnaround time.</p>
-        </li>
-        <li>
-          <h3>Market Strategy Implementation</h3>
-          <p>Created an effective go-to-market strategy that increased product awareness and sales by 40% in the first quarter after launch.</p>
+          <h3>Mentorship & Team Growth</h3>
+          <p>Mentored three junior developers, two of whom were promoted to mid-level roles within 18 months.</p>
         </li>
       </ul>
     </section>
@@ -45,105 +41,91 @@ export const initialCvHtml = `
       <h2>INTERESTS</h2>
       <ul class="interests-list">
         <li>
-          <h3>Technology Innovation</h3>
-          <p>A keen interest in exploring emerging technologies and their potential to disrupt traditional industries and create new markets.</p>
+          <h3>Open Source Contribution</h3>
+          <p>Active contributor to several open-source projects in the JavaScript ecosystem, focusing on developer tools and libraries.</p>
         </li>
         <li>
-          <h3>Mentorship in Startups</h3>
-          <p>Passionate about mentoring aspiring entrepreneurs and supporting them in navigating the challenges of building successful startups.</p>
+          <h3>Competitive Programming</h3>
+          <p>Enjoy solving complex algorithmic challenges and participating in online coding competitions.</p>
         </li>
         <li>
-          <h3>Sustainability Solutions</h3>
-          <p>Dedicated to finding sustainable solutions that address climate change while fostering economic growth and entrepreneurship.</p>
+          <h3>Landscape Photography</h3>
+          <p>Passionate about capturing the beauty of natural landscapes during hiking and travel adventures.</p>
         </li>
       </ul>
     </section>
   </aside>
   <main class="main-content">
     <header class="cv-header">
-      <h1>MILA ALLEN</h1>
-      <div class="subtitle">STARTUP FOUNDER | ENTREPRENEURIAL LEADERSHIP | INNOVATION STRATEGIST</div>
+      <h1>ALEX DOE</h1>
+      <div class="subtitle">SENIOR SOFTWARE ENGINEER | FULL-STACK DEVELOPMENT | CLOUD ARCHITECTURE</div>
     </header>
     <section>
       <h2>SUMMARY</h2>
-      <p>Entrepreneurial leader with over 5 years of experience turning ideas into profitable, scalable ventures. Proven success in securing over $2M in funding, building high-performing teams, and launching market-leading products that drive measurable growth. Known for blending strategic vision with hands-on execution-transforming business challenges into opportunities.</p>
+      <p>A results-driven Senior Software Engineer with 8+ years of experience in designing, developing, and deploying high-performance web applications. Expertise in full-stack JavaScript development, with a strong focus on modern front-end frameworks and scalable back-end architecture. Passionate about writing clean, maintainable code and building products that provide exceptional user experiences.</p>
     </section>
     <section class="experience">
       <h2>EXPERIENCE</h2>
       <div class="job">
         <div class="job-header">
-          <h3>Chief Executive Officer</h3>
-          <span>Denver, Colorado</span>
+          <h3>Senior Software Engineer</h3>
+          <span>San Francisco, CA</span>
         </div>
         <div class="job-subheader">
-          <h4>My Startup</h4>
-          <span>01/2020 - Present</span>
+          <h4>Tech Innovators Inc.</h4>
+          <span>03/2021 - Present</span>
         </div>
         <ul>
-          <li>Developed and executed an innovative business plan that resulted in a 50% revenue growth within the first year of operations and expanded the market reach significantly.</li>
-          <li>Secured $750,000 in funding through strategic partnerships and persuasive pitching, establishing a solid foundation for the startup's early growth phase.</li>
-          <li>Implemented customer feedback loops to refine product offerings, enhancing overall customer satisfaction by 20% and retention rates by 15%.</li>
-          <li>Oversaw daily operations and financial management, maintaining budget discipline that resulted in a profit margin improvement from 10% to 18% over two years.</li>
-          <li>Cultivated a collaborative culture that attracted top talent, leading to improved team productivity and morale across diverse business functions.</li>
-          <li>Enhanced brand recognition by launching targeted marketing campaigns, leading to a 60% increase in web traffic and a notable rise in sales inquiries.</li>
+          <li>Architect and develop new user-facing features using React.js and Next.js, resulting in a 25% increase in user engagement.</li>
+          <li>Build reusable components and front-end libraries for future use, streamlining development and ensuring UI consistency.</li>
+          <li>Optimize components for maximum performance across a vast array of web-capable devices and browsers.</li>
+          <li>Collaborate with product managers and designers to translate product requirements into technical solutions.</li>
+          <li>Write and maintain robust back-end services using Node.js, Express, and TypeScript.</li>
         </ul>
       </div>
       <div class="job">
         <div class="job-header">
-          <h3>Product Manager</h3>
-          <span>Boulder, Colorado</span>
+          <h3>Software Engineer</h3>
+          <span>Palo Alto, CA</span>
         </div>
         <div class="job-subheader">
-          <h4>Innovative Solutions Ltd.</h4>
-          <span>06/2018 - 12/2019</span>
+          <h4>Creative Solutions Co.</h4>
+          <span>07/2018 - 02/2021</span>
         </div>
         <ul>
-          <li>Developed new product lines from initial concept to launch, resulting in an annual revenue increase of $500,000 through strategic market fit.</li>
-          <li>Conducted market research that identified key customer segments, influencing product design and marketing strategies central to the product's success.</li>
-          <li>Collaborated with cross-functional teams to refine user experience, which enhanced user retention by 30% over the first year.</li>
-          <li>Launched a successful digital marketing campaign that increased lead generation by 45%, significantly boosting the sales funnel effectiveness.</li>
-          <li>Streamlined product development processes, reducing time-to-market by 20% through process improvements and better resource allocation.</li>
+          <li>Developed and maintained client-side logic for a large-scale e-commerce platform using React and Redux.</li>
+          <li>Worked closely with the design team to implement pixel-perfect user interfaces from mockups and wireframes.</li>
+          <li>Integrated with various third-party APIs for payment processing, shipping, and analytics.</li>
+          <li>Participated in code reviews to maintain a high standard of code quality and provide constructive feedback to peers.</li>
         </ul>
       </div>
       <div class="job">
         <div class="job-header">
-          <h3>Business Development Specialist</h3>
-          <span>Denver, Colorado</span>
+          <h3>Junior Web Developer</h3>
+          <span>Mountain View, CA</span>
         </div>
         <div class="job-subheader">
-          <h4>Global Tech Corp.</h4>
-          <span>01/2016 - 05/2018</span>
+          <h4>Web Wizards Agency</h4>
+          <span>06/2016 - 06/2018</span>
         </div>
         <ul>
-          <li>Identified new business opportunities in tech sectors, driving a 35% increase in client base through effective networking and outreach.</li>
-          <li>Participated in negotiations that secured strategic partnerships with key industry players, paving the way for future collaborative projects.</li>
-          <li>Conducted comprehensive competitor analysis to inform product positioning, enhancing the overall market strategy significantly.</li>
+          <li>Assisted in the development of brochure websites and small web applications for various clients using HTML, CSS, and JavaScript (jQuery).</li>
+          <li>Gained experience with version control (Git) and agile development methodologies.</li>
+          <li>Provided support and maintenance for existing client websites.</li>
         </ul>
+
       </div>
     </section>
     <section>
       <h2>EDUCATION</h2>
        <div class="education-item">
         <div class="education-header">
-          <h3>University of Denver</h3>
-          <span>Denver, Colorado</span>
+          <h3>Stanford University</h3>
+          <span>Stanford, CA</span>
         </div>
         <div class="education-subheader">
-          <h4>MBA</h4>
-          <span>01/2016 - 01/2018</span>
-        </div>
-      </div>
-    </section>
-    <section>
-      <h2>TRAINING / COURSES</h2>
-      <div class="training-container">
-        <div class="training-item">
-          <h3>Startup Financing</h3>
-          <p>Completed the course offered by Stanford Online, focusing on various startup funding methods and investor relations.</p>
-        </div>
-        <div class="training-item">
-          <h3>Agile Project Management</h3>
-          <p>Achieved certification from Coursera, emphasizing efficient project lifecycle management and resource allocation techniques.</p>
+          <h4>B.S. in Computer Science</h4>
+          <span>09/2012 - 06/2016</span>
         </div>
       </div>
     </section>
@@ -157,9 +139,9 @@ export const initialCvHtml = `
           </div>
         </div>
         <div class="language-item">
-          <p><strong>SPANISH</strong> Advanced</p>
+          <p><strong>GERMAN</strong> Conversational</p>
           <div class="dots">
-            <span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span>
+            <span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span><span class="dot"></span>
           </div>
         </div>
       </div>

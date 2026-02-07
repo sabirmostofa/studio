@@ -29,15 +29,15 @@ import { hexToHsl, hslToHex } from "@/lib/utils";
 
 type InputType = "text" | "html" | "image";
 
-const DEFAULT_PRIMARY_COLOR_HSL = { h: 221, s: 26, l: 14 };
+const DEFAULT_PRIMARY_COLOR_HSL = { h: 173, s: 58, l: 36 };
 const DEFAULT_BACKGROUND_COLOR_HSL = { h: 0, s: 0, l: 100 };
-const DEFAULT_ACCENT_COLOR_HSL = { h: 160, s: 84, l: 39 };
+const DEFAULT_ACCENT_COLOR_HSL = { h: 173, s: 58, l: 36 };
 const DEFAULT_SIDEBAR_COLOR_HSL = { h: 0, s: 0, l: 98 };
 
 
-const DEFAULT_PRIMARY_COLOR_HEX = "#1A202C";
+const DEFAULT_PRIMARY_COLOR_HEX = "#259386";
 const DEFAULT_BACKGROUND_COLOR_HEX = "#FFFFFF";
-const DEFAULT_ACCENT_COLOR_HEX = "#10B981";
+const DEFAULT_ACCENT_COLOR_HEX = "#259386";
 const DEFAULT_SIDEBAR_COLOR_HEX = "#FAFAFA";
 
 
@@ -281,19 +281,10 @@ export default function Home() {
             --sidebar-bg: ${sidebarColor.h} ${sidebarColor.s}% ${sidebarColor.l}%;
           }
           body { 
-            opacity: 0; 
-            transition: opacity 0.5s ease-in-out;
             background-color: hsl(var(--background));
           }
           ${generatedCss}
         </style>
-        <script>
-          window.addEventListener('load', () => {
-            setTimeout(() => {
-              document.body.style.opacity = 1;
-            }, 50)
-          });
-        </script>
       </head>
       <body>
         ${cvHtml}
