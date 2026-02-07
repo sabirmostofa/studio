@@ -48,25 +48,22 @@ const prompt = ai.definePrompt({
   5.  **Right Column (\`.main-content\`):**
       - Set \`flex-basis: 65%;\` and \`flex-grow: 1;\`.
       - Give it padding (e.g., 1.5rem).
-  6.  **Profile Picture (\`.profile-pic\`):**
-      - Make it circular (\`border-radius: 50%;\`) and give it a max-width and center it.
-  7.  **Headings:**
+  6.  **Headings:**
       - Style \`h1\` to be large and bold.
       - Style section headings (\`h2\`) to be uppercase, with \`color: hsl(var(--primary));\` and a \`border-bottom\` using \`hsl(var(--border));\`.
-  8.  **Subtitle (\`.subtitle\`):**
+  7.  **Subtitle (\`.subtitle\`):**
       - Make it stand out. Use \`background-color: hsl(var(--accent));\` and \`color: hsl(var(--accent-foreground));\`, and add padding.
-  9.  **Lists (\`ul.contact-list\`, \`.skills-list\` etc):**
+  8.  **Lists (\`ul.contact-list\`, \`.skills-list\` etc):**
       - Style items (\`li\`) with proper spacing. For the contact list, use flexbox to align the SVG icon with the text vertically (\`align-items: center\`).
-  10. **Experience Section (\`.job-header\`, \`.job-subheader\`):**
+  9.  **Experience Section (\`.job-header\`, \`.job-subheader\`):**
       - Use \`display: flex;\` with \`justify-content: space-between;\` to place elements on opposite ends.
-  11. **Language Dots (\`.language-item\`, \`.dots\`):**
+  10. **Language Dots (\`.language-item\`, \`.dots\`):**
       - Use flexbox. Style \`.dot.filled\` with \`background-color: hsl(var(--primary));\` and \`.dot\` (unfilled) with a border using \`hsl(var(--border));\`.
-  12. **Print Styles:**
+  11. **Print Styles:**
       - Add a \`@media print\` block.
       - Inside, make the layout single-column. Set \`.cv-wrapper { display: block; max-width: 100%; margin: 0; box-shadow: none; border: none; }\`
       - Reset flex properties for columns: \`.sidebar, .main-content { flex-basis: auto; width: 100%; padding: 0; }\`
       - Ensure a clean, ink-friendly look: remove background colors, set text to black (\`color: #000 !important;\`).
-      - Reduce image sizes if necessary: \`.profile-pic { max-width: 150px; }\`
 
   Also, consider the following user suggestions for styling:
   {{{suggestions}}}

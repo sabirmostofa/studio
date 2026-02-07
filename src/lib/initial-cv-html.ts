@@ -1,7 +1,6 @@
 export const initialCvHtml = `
 <div class="cv-wrapper">
   <aside class="sidebar">
-    <img src="https://picsum.photos/seed/cv-pic/200/200" alt="Mila Allen" class="profile-pic" data-ai-hint="profile picture" />
     <section>
       <h2>CONTACTS</h2>
       <ul class="contact-list">

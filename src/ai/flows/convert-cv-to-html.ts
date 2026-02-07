@@ -45,8 +45,7 @@ The output HTML **MUST** use the following structure and CSS classes. Do not dev
 \`\`\`html
 <div class="cv-wrapper">
   <aside class="sidebar">
-    <!-- Contact info, skills, achievements, interests, profile picture go here -->
-    <img src="https://picsum.photos/seed/cv-pic/200/200" alt="Profile Picture" class="profile-pic" data-ai-hint="profile picture" />
+    <!-- Contact info, skills, achievements, interests go here -->
     <section>
       <h2>CONTACTS</h2>
       <ul class="contact-list">
@@ -108,12 +107,12 @@ The output HTML **MUST** use the following structure and CSS classes. Do not dev
 **Instructions:**
 1.  Analyze the input (text or image) to identify all standard CV sections: Name, Contact, Summary, Experience, Education, Skills, etc.
 2.  If the input is an image, use OCR to extract the text.
-3.  Place the "contact", "skills", "achievements", "interests", and profile picture into the \`<aside class="sidebar">\`.
+3.  Place the "contact", "skills", "achievements", and "interests" into the \`<aside class="sidebar">\`.
 4.  Place the "name", "summary", "experience", "education", and "training/courses" into the \`<main class="main-content">\`.
 5.  Use \`<h1>\` for the person's name and \`<div class="subtitle">\` for their title or tagline.
 6.  Use \`<h2>\` for section titles.
 7.  Use \`<ul>\` and \`<li>\` for lists. For the experience section, use the \`<div class="job">\` structure shown.
-8.  If the input contains a photo of a person, do **not** try to replicate it. Instead, use a placeholder image: \`https://picsum.photos/seed/cv-pic/200/200\`.
+8.  Do **not** include a profile picture, even if one is present in the source material.
 9.  Generate **ONLY** the HTML code for the content inside the \`<body>\` tag. Do not add any explanations, comments, or markdown.
 
 **CV Input:**
