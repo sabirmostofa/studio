@@ -69,9 +69,13 @@ Use hsl() CSS functions with the CSS variables available from the theme for all 
       - Use flexbox. Style \`.dot.filled\` with \`background-color: hsl(var(--primary));\` and \`.dot\` (unfilled) with a border using \`hsl(var(--border));\`.
   11. **Print Styles:**
       - Add a \`@media print\` block.
-      - Inside, make the layout single-column. Set \`.cv-wrapper { display: block; max-width: 100%; margin: 0; box-shadow: none; border: none; }\`
-      - Reset flex properties for columns: \`.sidebar, .main-content { flex-basis: auto; width: 100%; padding: 0; }\`
-      - Ensure a clean, ink-friendly look: remove background colors, set text to black (\`color: #000 !important;\`).
+      - Inside, the print output MUST look identical to the screen view.
+      - Add \`@page { size: A4; margin: 0; }\` to control the print page.
+      - Reset body margins for printing: \`body { margin: 0; }\`.
+      - Remove the box-shadow from \`.cv-wrapper\` for a cleaner print.
+      - To force the browser to print background colors and images, add \`-webkit-print-color-adjust: exact; print-color-adjust: exact;\` to \`body\` and any elements with backgrounds (like \`.sidebar\`, \`.subtitle\`, \`.dot.filled\`).
+      - DO NOT alter the two-column layout. It must remain \`display: flex\`.
+      - DO NOT remove colors or force text to black.
 
   Also, consider the following user suggestions for styling:
   {{{suggestions}}}
