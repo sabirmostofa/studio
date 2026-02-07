@@ -38,13 +38,32 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const [primaryColor, setPrimaryColor] = useState({ h: 213, s: 31, l: 50 });
+  const [primaryColor, setPrimaryColor] = useState({ h: 162, s: 44, l: 47 });
   const [backgroundColor, setBackgroundColor] = useState({
     h: 220,
     s: 17,
     l: 95,
   });
-  const [accentColor, setAccentColor] = useState({ h: 263, s: 19, l: 64 });
+  const [accentColor, setAccentColor] = useState({ h: 145, s: 45, l: 58 });
+
+  useEffect(() => {
+    const generateInitialStyles = async () => {
+      setIsLoading(true);
+      const result = await generateStyles(initialCvHtml, "");
+      if (result.success && result.css) {
+        setGeneratedCss(result.css);
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description:
+            result?.error || "Could not generate initial styles.",
+        });
+      }
+      setIsLoading(false);
+    };
+    generateInitialStyles();
+  }, [toast]);
 
   useEffect(() => {
     document.documentElement.style.setProperty(
@@ -378,7 +397,12 @@ export default function Home() {
             <Label className="text-lg font-headline">Preview</Label>
             <Card className="h-full w-full overflow-hidden shadow-lg border-2">
               <CardContent className="p-0 h-full">
-                {cvHtml ? (
+                {isLoading && !generatedCss ? (
+                   <div className="flex items-center justify-center h-full text-muted-foreground">
+                    <Loader2 className="mr-2 h-8 w-8 animate-spin" />
+                    <p>Generating your CV...</p>
+                  </div>
+                ) : cvHtml ? (
                   <iframe
                     srcDoc={iframeSrcDoc}
                     title="CV Preview"
