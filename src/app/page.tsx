@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import {
-  Download,
   FileCode,
   FileImage,
   FileText,
@@ -153,7 +152,7 @@ export default function Home() {
   };
 
   const handleDownloadPdf = () => {
-    const iframe = document.querySelector("iframe");
+    const iframe = document.getElementById('cv-preview-iframe') as HTMLIFrameElement | null;
     if (iframe?.contentWindow) {
       iframe.contentWindow.focus();
       iframe.contentWindow.print();
@@ -404,6 +403,7 @@ export default function Home() {
                   </div>
                 ) : cvHtml ? (
                   <iframe
+                    id="cv-preview-iframe"
                     srcDoc={iframeSrcDoc}
                     title="CV Preview"
                     className="w-full h-full border-0"
