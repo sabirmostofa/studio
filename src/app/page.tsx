@@ -9,6 +9,8 @@ import {
   Loader2,
   Type,
   Wand2,
+  ZoomIn,
+  ZoomOut,
 } from "lucide-react";
 
 import { generateCvFromRawInput, generateStyles } from "@/app/actions";
@@ -56,6 +58,8 @@ export default function Home() {
   const [accentHex, setAccentHex] = useState(
     hslToHex(accentColor.h, accentColor.s, accentColor.l)
   );
+
+  const [zoom, setZoom] = useState(0.75);
 
   useEffect(() => {
     document.documentElement.style.setProperty(
@@ -463,9 +467,32 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="space-y-2 lg:h-[calc(100vh - 12rem)] min-h-[480px]">
-            <Label className="text-lg font-headline">Preview</Label>
-            <Card className="h-full w-full overflow-hidden shadow-lg border-2">
+          <div className="flex flex-col gap-2 lg:h-[calc(100vh - 12rem)] min-h-[480px]">
+            <div className="flex justify-between items-center">
+              <Label className="text-lg font-headline">Preview</Label>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setZoom((z) => Math.max(0.25, z - 0.1))}
+                  disabled={zoom <= 0.25}
+                >
+                  <ZoomOut />
+                </Button>
+                <span className="text-sm font-semibold w-12 text-center tabular-nums">
+                  {(zoom * 100).toFixed(0)}%
+                </span>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setZoom((z) => Math.min(2, z + 0.1))}
+                  disabled={zoom >= 2}
+                >
+                  <ZoomIn />
+                </Button>
+              </div>
+            </div>
+            <Card className="flex-1 w-full overflow-hidden shadow-lg border-2">
               <CardContent className="p-0 h-full">
                 {isLoading && !generatedCss ? (
                   <div className="flex items-center justify-center h-full text-muted-foreground">
@@ -473,13 +500,22 @@ export default function Home() {
                     <p>Generating your CV...</p>
                   </div>
                 ) : cvHtml ? (
-                  <iframe
-                    id="cv-preview-iframe"
-                    srcDoc={iframeSrcDoc}
-                    title="CV Preview"
-                    className="w-full h-full border-0"
-                    key={`${cvHtml}${generatedCss}${primaryColor.h}${backgroundColor.h}${accentColor.h}`}
-                  />
+                  <div className="w-full h-full overflow-auto bg-muted/20 p-8">
+                    <iframe
+                      id="cv-preview-iframe"
+                      srcDoc={iframeSrcDoc}
+                      title="CV Preview"
+                      className="mx-auto block border-0 shadow-lg"
+                      style={{
+                        width: "900px",
+                        height: "1273px",
+                        transform: `scale(${zoom})`,
+                        transformOrigin: "top center",
+                        transition: "transform 0.2s ease-out",
+                      }}
+                      key={`${cvHtml}${generatedCss}${primaryColor.h}${backgroundColor.h}${accentColor.h}`}
+                    />
+                  </div>
                 ) : (
                   <div className="flex items-center justify-center h-full text-muted-foreground">
                     <p>Preview will appear here.</p>
